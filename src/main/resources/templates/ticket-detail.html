@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Ticket Details - Support CRM</title>
+
+
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h1>Support CRM</h1>
+</nav>
+
+<div class="container">
+
+    <a th:href="@{/}" class="back-link">
+        ← Back to Tickets
+    </a>
+
+
+    <!-- Page Header -->
+
+    <div class="page-header">
+
+        <h2>Ticket Details</h2>
+
+        <span class="ticket-id"
+              th:text="${ticket.ticketId}">
+            TKT-123456
+        </span>
+
+    </div>
+
+
+    <!-- Ticket Information -->
+
+    <div class="card">
+
+        <h3>Customer & Issue Information</h3>
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Customer Name
+                </span>
+
+                <span class="detail-value"
+                      th:text="${ticket.customerName}">
+                    Rahul
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Customer Email
+                </span>
+
+                <span class="detail-value"
+                      th:text="${ticket.customerEmail}">
+                    rahul@gmail.com
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Subject
+                </span>
+
+                <span class="detail-value"
+                      th:text="${ticket.subject}">
+                    Payment failed
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Status
+                </span>
+
+                <span
+                        th:if="${ticket.status == 'Open'}"
+                        class="status status-open"
+                        th:text="${ticket.status}">
+                    Open
+                </span>
+
+                <span
+                        th:if="${ticket.status == 'In Progress'}"
+                        class="status status-progress"
+                        th:text="${ticket.status}">
+                    In Progress
+                </span>
+
+                <span
+                        th:if="${ticket.status == 'Closed'}"
+                        class="status status-closed"
+                        th:text="${ticket.status}">
+                    Closed
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div style="margin-top: 25px;">
+
+            <span class="detail-label">
+                Issue Description
+            </span>
+
+            <div class="description-box"
+                 th:text="${ticket.description}">
+                Customer payment was deducted but order failed.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Update Ticket -->
+
+    <div class="card">
+
+        <h3>Update Ticket</h3>
+
+        <form
+                th:action="@{/tickets/{id}/update(id=${ticket.ticketId})}"
+                method="post"
+                class="update-form">
+
+            <div class="form-group">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select id="status" name="status">
+
+                    <option value="Open"
+                            th:selected="${ticket.status == 'Open'}">
+                        Open
+                    </option>
+
+                    <option value="In Progress"
+                            th:selected="${ticket.status == 'In Progress'}">
+                        In Progress
+                    </option>
+
+                    <option value="Closed"
+                            th:selected="${ticket.status == 'Closed'}">
+                        Closed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="notes">
+                    Add Note
+                </label>
+
+                <textarea
+                        id="notes"
+                        name="notes"
+                        placeholder="Add a note about this ticket...">
+                </textarea>
+
+            </div>
+
+
+            <button type="submit" class="update-btn">
+                Update Ticket
+            </button>
+
+        </form>
+
+
+    </div>
+
+
+    <!-- Notes -->
+
+    <div class="card">
+
+        <h3>Notes & Activity</h3>
+
+
+        <div th:if="${#lists.isEmpty(ticket.notes)}"
+             class="no-notes">
+
+            No notes have been added yet.
+
+        </div>
+
+
+        <div th:each="note : ${ticket.notes}"
+             class="note">
+
+            <div class="note-text"
+                 th:text="${note.noteText}">
+                Customer has been contacted.
+            </div>
+
+            <div class="note-date"
+                 th:text="${#temporals.format(note.createdAt, 'dd MMM yyyy, HH:mm')}">
+                11 Sep 2026, 23:03
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Delete Ticket -->
+
+    <form
+            th:action="@{/tickets/{id}/delete(id=${ticket.ticketId})}"
+            method="post"
+            style="margin-top: 20px; margin-bottom: 30px;">
+
+        <button type="submit" class="delete-button">
+            Delete Ticket
+        </button>
+
+    </form>
+
+</div>
+
+
+</body>
+
+</html>

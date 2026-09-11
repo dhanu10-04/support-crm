@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Create Ticket - Support CRM</title>
+
+
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h1>Support CRM</h1>
+</nav>
+
+<div class="container">
+
+    <a th:href="@{/}" class="back-link">
+        ← Back to Tickets
+    </a>
+
+    <div class="form-card">
+
+        <h2>Create New Ticket</h2>
+
+        <p class="form-description">
+            Enter the customer's information and issue details.
+        </p>
+
+        <form th:action="@{/tickets}"
+              th:object="${createTicketRequest}"
+              method="post">
+
+            <!-- Customer Name -->
+
+            <div class="form-group">
+
+                <label for="customerName">
+                    Customer Name
+                </label>
+
+                <input
+                        type="text"
+                        id="customerName"
+                        th:field="*{customerName}"
+                        placeholder="Enter customer name"
+                >
+
+                <p
+                        class="error"
+                        th:if="${#fields.hasErrors('customerName')}"
+                        th:errors="*{customerName}">
+                </p>
+
+            </div>
+
+
+            <!-- Customer Email -->
+
+            <div class="form-group">
+
+                <label for="customerEmail">
+                    Customer Email
+                </label>
+
+                <input
+                        type="email"
+                        id="customerEmail"
+                        th:field="*{customerEmail}"
+                        placeholder="Enter customer email"
+                >
+
+                <p
+                        class="error"
+                        th:if="${#fields.hasErrors('customerEmail')}"
+                        th:errors="*{customerEmail}">
+                </p>
+
+            </div>
+
+
+            <!-- Subject -->
+
+            <div class="form-group">
+
+                <label for="subject">
+                    Issue Subject
+                </label>
+
+                <input
+                        type="text"
+                        id="subject"
+                        th:field="*{subject}"
+                        placeholder="Enter issue subject"
+                >
+
+                <p
+                        class="error"
+                        th:if="${#fields.hasErrors('subject')}"
+                        th:errors="*{subject}">
+                </p>
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    Issue Description
+                </label>
+
+                <textarea
+                        id="description"
+                        th:field="*{description}"
+                        placeholder="Describe the customer's issue..."
+                ></textarea>
+
+                <p
+                        class="error"
+                        th:if="${#fields.hasErrors('description')}"
+                        th:errors="*{description}">
+                </p>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="button-row">
+
+                <button type="submit" class="submit-btn">
+                    Create Ticket
+                </button>
+
+                <a th:href="@{/}" class="cancel-btn">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

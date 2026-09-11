@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Support CRM</title>
+
+
+</head>
+
+<body>
+
+<nav class="navbar">
+    <h1>Support CRM</h1>
+    <span>Customer Support Ticketing System</span>
+</nav>
+
+<div class="container">
+
+    <div class="top-section">
+        <h2>Tickets</h2>
+
+        <a th:href="@{/tickets/new}" class="create-btn">
+            + Create Ticket
+        </a>
+    </div>
+
+
+    <!-- Search and Filter -->
+
+    <div class="filter-box">
+
+        <form th:action="@{/}" method="get" class="filter-form">
+
+            <input
+                    type="text"
+                    name="search"
+                    class="search-input"
+                    placeholder="Search by ticket ID, customer, email, subject or description"
+                    th:value="${search}"
+            >
+
+            <select name="status" class="status-select">
+
+                <option value="">All Status</option>
+
+                <option value="Open"
+                        th:selected="${status == 'Open'}">
+                    Open
+                </option>
+
+                <option value="In Progress"
+                        th:selected="${status == 'In Progress'}">
+                    In Progress
+                </option>
+
+                <option value="Closed"
+                        th:selected="${status == 'Closed'}">
+                    Closed
+                </option>
+
+            </select>
+
+            <button type="submit" class="filter-btn">
+                Search
+            </button>
+
+            <a th:href="@{/}" class="clear-btn">
+                Clear
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- Ticket Table -->
+
+    <div class="ticket-card">
+
+        <table class="ticket-table">
+
+            <thead>
+
+            <tr>
+                <th>Ticket ID</th>
+                <th>Customer</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            <tr th:each="ticket : ${tickets}">
+
+                <td>
+                    <span class="ticket-id"
+                          th:text="${ticket.ticketId}">
+                        TKT-123456
+                    </span>
+                </td>
+
+                <td th:text="${ticket.customerName}">
+                    Rahul
+                </td>
+
+                <td th:text="${ticket.subject}">
+                    Payment failed
+                </td>
+
+                <td>
+
+                    <span
+                            th:if="${ticket.status == 'Open'}"
+                            class="status status-open"
+                            th:text="${ticket.status}">
+                        Open
+                    </span>
+
+                    <span
+                            th:if="${ticket.status == 'In Progress'}"
+                            class="status status-progress"
+                            th:text="${ticket.status}">
+                        In Progress
+                    </span>
+
+                    <span
+                            th:if="${ticket.status == 'Closed'}"
+                            class="status status-closed"
+                            th:text="${ticket.status}">
+                        Closed
+                    </span>
+
+                </td>
+
+                <td
+                        th:text="${#temporals.format(ticket.createdAt, 'dd MMM yyyy, HH:mm')}">
+                    11 Sep 2026, 17:53
+                </td>
+
+                <td>
+
+                    <a
+                            th:href="@{/tickets/{id}(id=${ticket.ticketId})}"
+                            class="view-btn">
+                        View
+                    </a>
+
+                </td>
+
+            </tr>
+
+
+            <!-- No tickets -->
+
+            <tr th:if="${#lists.isEmpty(tickets)}">
+
+                <td colspan="6">
+
+                    <div class="empty-message">
+                        No tickets found.
+                    </div>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
